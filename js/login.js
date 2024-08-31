@@ -1,18 +1,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 const firebaseConfig = {
-    apiKey: "AIzaSyCncVIlCFOtW6liexk8L-o1s5t4YQnh4_4",
-    authDomain: "sanjeevan-33.firebaseapp.com",
-    projectId: "sanjeevan-33",
-    storageBucket: "sanjeevan-33.appspot.com",
-    messagingSenderId: "1028806842733",
-    appId: "1:1028806842733:web:6a53bc3809cf5bc163a264",
-    measurementId: "G-FB56MZXXS1"
-  };
-  // Initialize Firebase
-//   const app = initializeApp(firebaseConfig);
-
-// Initialize Firebase
+  apiKey: "AIzaSyDQIem4w5S_kltclA6aWknU4I6FZHDi1G0",
+  authDomain: "sanjeevan-33-292ce.firebaseapp.com",
+  projectId: "sanjeevan-33-292ce",
+  storageBucket: "sanjeevan-33-292ce.appspot.com",
+  messagingSenderId: "838273827123",
+  appId: "1:838273827123:web:2b7aacc7adca2a5f9e3e46"
+};
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 auth.languageCode = "en"
