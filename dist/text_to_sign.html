@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text/Voice to Sign Video - ISL Translator</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Inline CSS for Page Styling -->
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh; /* Ensure the body covers full height */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            margin-left: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a4a4a;
+        }
+
+        /* Center the menu in the navbar */
+        .menu {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .menu a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .menu a:hover {
+            color: #667eea;
+        }
+
+        /* Ensure sign-in button stays on the right */
+        .sign-in-btn:hover {
+            background-color: #4a4a4a;
+            transform: translateY(-3px);
+        }
+
+        /* Main Content Styling */
+        .main-container {
+            margin-top: 70px; /* To offset the fixed navbar */
+            text-align: center;
+            padding: 20px;
+            flex: 1;
+            width: 100%;
+            max-width: 800px; /* Center content */
+        }
+
+        /* Video Player Styling */
+        #videoPlayer {
+            width: 100%;
+            max-width: 640px;
+            height: auto;
+            border: 2px solid #4a4a4a;
+            background-color: #000;
+            margin: 20px auto;
+            border-radius: 12px; /* Rounded corners for consistency */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Control Panel Styling */
+        #controlPanel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #textInput {
+            width: 300px;
+            height: 40px;
+            font-size: 18px;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 2px solid #4a4a4a;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #micButton {
+            width: 50px;
+            height: 50px;
+            background-color: #ff4757;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #micButton:hover {
+            background-color: #2ed573; /* Hover color change for effect */
+            transform: scale(1.1); /* Slight zoom on hover */
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        /* Animation Keyframes */
+        @keyframes slideInFade {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white; /* Same as feature items background */
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Initial shadow same as feature items */
+            animation: slideInFade 1s ease-out;
+            opacity: 0;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation-fill-mode: forwards;
+            animation-delay: 0.25s;
+        }
+
+        /* Hover Effect - Exactly the Same as Feature Items */
+        .how-it-works:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px; /* Add space above the footer */
+            padding: 10px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            position: relative; /* Change from fixed to relative */
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            #videoPlayer {
+                width: 90%; /* Adjust video size for smaller screens */
+                height: auto;
+            }
+
+            #textInput {
+                width: 80%; /* Adjust text input width for smaller screens */
+            }
+
+            .how-it-works {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="logo">ISL Translator</div>
+        <nav class="menu">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="#">Features</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Video Player Section -->
+        <div id="videoPlayer">
+            <video id="signVideo" width="640" height="360" controls>
+                <source id="videoSource" src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <!-- Control Panel Section -->
+        <div id="controlPanel" class="section">
+            <input type="text" id="textInput" placeholder="Type or speak a sentence...">
+            <button id="micButton">🎤</button>
+        </div>
+
+        <!-- Description Section -->
+        <div class="description section">
+            <p>Type a sentence or use your voice to convert it to a sign language video. Our platform supports real-time text and voice input to provide a seamless translation experience.</p>
+        </div>
+
+        <!-- How It Works Section -->
+        <div class="how-it-works section">
+            <h3>How It Works</h3>
+            <ul>
+                <li>Type in a sentence in the input box or click on the microphone to use voice input.</li>
+                <li>Our system processes the input text or voice and converts it into a sign language video.</li>
+                <li>Watch the video to learn how to sign the sentence using Indian Sign Language.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 ISL Translator. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const videoPlayer = document.getElementById('signVideo');
+        const videoSource = document.getElementById('videoSource');
+        const textInput = document.getElementById('textInput');
+        const micButton = document.getElementById('micButton');
+
+        // WebSocket connection setup with token authentication
+        const token = 'your-token-here';  // Replace with your actual token
+        const ws = new WebSocket(`ws://localhost:8080?token=${token}`);
+
+        ws.onopen = () => {
+            console.log('WebSocket connection established');
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.videoUrl) {
+                playSignVideo(data.videoUrl);
+            }
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error: ', error);
+        };
+
+        ws.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
+
+        // Function to play the video received from the backend
+        function playSignVideo(videoUrl) {
+            videoSource.src = videoUrl;
+            videoPlayer.load();
+            videoPlayer.play();
+        }
+
+        // Event listener for the text input field
+        textInput.addEventListener('input', (event) => {
+            const text = event.target.value.trim();
+            if (text && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ text: text }));
+            }
+        });
+
+        // Speech recognition setup
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        micButton.addEventListener('click', () => {
+            recognition.start();
+            micButton.style.backgroundColor = '#2ed573';
+        });
+
+        recognition.onresult = (event) => {
+            const speechResult = event.results[0][0].transcript;
+            textInput.value = speechResult;
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ text: speechResult }));
+            }
+            micButton.style.backgroundColor = '#ff4757';
+        };
+
+        recognition.onspeechend = () => {
+            recognition.stop();
+        };
+
+        recognition.onerror = (event) => {
+            console.error('Speech recognition error detected: ' + event.error);
+            micButton.style.backgroundColor = '#ff4757';
+        };
+    </script>
+</body>
+</html>

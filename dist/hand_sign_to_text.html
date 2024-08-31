@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Sign to Text</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+
+    /* General Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh; /* Ensure the body covers full height */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            margin-left: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a4a4a;
+        }
+
+        /* Center the menu in the navbar */
+        .menu {
+            display: flex;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .menu a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .menu a:hover {
+            color: #667eea;
+        }
+
+        /* Ensure sign-in button stays on the right */
+        .sign-in-btn:hover {
+            background-color: #4a4a4a;
+            transform: translateY(-3px);
+        }
+
+        /* Main Content Styling */
+        .main-container {
+            margin-top: 70px; /* To offset the fixed navbar */
+            text-align: center;
+            padding: 20px;
+            flex: 1;
+            width: 100%;
+            max-width: 800px; /* Center content */
+        }
+
+        /* Camera Feed Styling */
+        #cameraFeed {
+            width: 100%;
+            max-width: 700px; /* Adjusted to match the last page */
+            height: 400px; /* Set a consistent height */
+            border: 2px solid #4a4a4a;
+            background-color: #fff;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: scaleX(-1); /* Mirror the camera feed */
+            animation: fadeIn 1s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+
+        /* Output Box Styling */
+        #outputBox {
+            width: 100%;
+            max-width: 300px; /* Adjusted to match the last page */
+            height: 70px; /* Adjusted to match the last page */
+            border: 2px solid #4a4a4a;
+            padding: 10px;
+            background-color: white;
+            font-size: 18px; /* Slightly reduced font size */
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            animation: slideIn 1s ease-out;
+        }
+
+        #outputBox input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            text-align: center;
+            background-color: transparent;
+            color: #333;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            text-align: left;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white; /* Same as feature items background */
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Initial shadow same as feature items */
+            animation: slideInFade 1s ease-out;
+            opacity: 0;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation-fill-mode: forwards;
+            animation-delay: 0.25s;
+        }
+
+        .how-it-works:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2)
+        }
+
+        .how-it-works h2 {
+            margin-top: 0;
+            color: #444;
+            font-size: 24px;
+            font-weight: 700;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .how-it-works p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInFade {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px; /* Add space above the footer */
+            padding: 10px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            position: relative; /* Change from fixed to relative */
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            #cameraFeed {
+                width: 90%; /* Adjust camera feed size for smaller screens */
+                height: auto;
+            }
+
+            #outputBox {
+                width: 90%; /* Adjust output box size for smaller screens */
+            }
+
+            .how-it-works {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Camera Feed Section -->
+    <div id="cameraFeed">
+        <video autoplay playsinline></video>
+    </div>
+
+    <!-- Output Box Section -->
+    <div id="outputBox"><div id="outputText">Output will be displayed here...</div></div>
+
+    <!-- How It Works Section -->
+    <div class="how-it-works">
+        <h2>How It Works</h2>
+        <p>This application uses your camera to capture hand signs and convert them into text using a machine learning model.</p>
+        <ul>
+            <li>The camera feed is analyzed in real-time.</li>
+            <li>Recognized hand signs are converted into text.</li>
+            <li>The text is displayed in the output box below.</li>
+            <li>Text-to-speech technology reads the text aloud.</li>
+        </ul>
+        <p>Make sure to allow camera access when prompted to enjoy the full experience!</p>
+    </div>
+
+    <!-- Canvas (Hidden) -->
+    <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
+
+    <script>
+        // Access camera and display feed
+        const video = document.querySelector('#cameraFeed video');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error('Error accessing camera: ', err);
+            });
+
+        // Set up canvas
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set up WebSocket
+        const ws = new WebSocket('ws://localhost:8080');
+
+        ws.onopen = () => {
+            console.log('WebSocket connection established');
+        };
+
+        ws.onmessage = (event) => {
+            const outputText = event.data; // Assume server sends the recognized text
+            displayOutput(outputText);
+            speakOutput(outputText);
+        };
+
+        // Function to capture frame from video and send to WebSocket
+        function captureFrame() {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const frameData = canvas.toDataURL('image/jpeg');
+            ws.send(frameData);
+        }
+
+        // Capture and send a frame every second
+        setInterval(captureFrame, 1000);
+
+        // Function to display output text in the output box
+        function displayOutput(text) {
+            const outputBox = document.getElementById('outputText');
+            outputBox.textContent = text; // Use textContent for display
+        }
+
+        // Function to convert text to speech using Google Text-to-Speech API
+        function speakOutput(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(utterance);
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 ISL Translator. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

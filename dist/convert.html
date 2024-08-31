@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert - ISL Translator</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Inline CSS for Page Styling -->
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #333;
+            position: relative;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4a4a4a;
+        }
+
+        .menu a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .menu a:hover {
+            color: #667eea;
+        }
+
+        .sign-in-btn {
+            padding: 8px 20px;
+            background-color: #667eea;
+            color: #fff;
+            margin-right: 35px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .sign-in-btn:hover {
+            background-color: #4a4a4a;
+            transform: translateY(-3px);
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 70px; /* To offset the fixed navbar */
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+
+        .hero-title {
+            font-size: 5rem; /* Consistent font size */
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        /* Conversion Options Section */
+        .conversion-options {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        .conversion-item {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            flex: 1 1 calc(45% - 40px);
+            max-width: 300px;
+            min-width: 250px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .conversion-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .conversion-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .conversion-item h2 {
+            color: #667eea;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        .conversion-item p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            margin: 0;
+            line-height: 1.5;
+        }
+        /* Footer */
+        .footer {
+            margin-top: 30px; /* Add space above the footer */
+            padding: 10px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            position: relative; /* Change from fixed to relative */
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .conversion-options {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .conversion-item {
+                flex: 1 1 100%;
+                max-width: 90%;
+                margin: 10px 0;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="logo">ISL Translator</div>
+        <nav class="menu">
+            <a href="index.html">Home</a>
+            <a href="#">About</a>
+            <a href="#">Features</a>
+            <a href="#">Contact</a>
+        </nav>
+        <div class="sign-in-btn" id="sign-in-btn">Profile</div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Convert Your Voice or Sign</h1>
+            <p class="hero-subtitle">Choose an option below to start converting between text and Indian Sign Language.</p>
+        </div>
+
+        <!-- Conversion Options Section -->
+        <div class="conversion-options">
+            <!-- Conversion Option 1 -->
+            <div class="conversion-item" onclick="redirectToTextToSign()">
+                <img src="../images/voicetohand.png" alt="Voice to Hand Sign">
+                <h2>Voice to Hand Sign</h2>
+                <p>Convert your written text into sign language gestures.</p>
+            </div>
+
+            <!-- Conversion Option 2 -->
+            <div class="conversion-item" onclick="redirectToSignToText()">
+                <img src="../images/handsign.png" alt="Hand Sign to Voice">
+                <h2>Hand Sign to Voice</h2>
+                <p>Translate sign language gestures back into written text.</p>
+            </div>
+        </div>
+    </div>
+     <!-- Footer -->
+     <footer class="footer">
+        <p>&copy; 2024 ISL Translator. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Redirection -->
+    <script>
+        function redirectToTextToSign() {
+            window.location.href = "text_to_sign.html"; // Replace with actual URL
+        }
+
+        function redirectToSignToText() {
+            window.location.href = "hand_sign_to_text.html"; // Replace with actual URL
+        }
+
+      
+            google.accounts.id.prompt((notification) => {
+                if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                    alert("Sign-in failed. Please try again or check your settings.");
+                }
+            });
+
+        // Handle Google Sign-In Response
+        function handleCredentialResponse(response) {
+            try {
+                const userObject = jwt_decode(response.credential);
+                const email = userObject.email;
+
+                // Store user information in local storage
+                localStorage.setItem('userEmail', email);
+
+                // Redirect to conversion page
+                window.location.href = "convert.html";
+            } catch (error) {
+                alert("An error occurred during sign-in. Please try again.");
+            }
+        }
+
+        // On page load, check if user is already signed in
+        window.onload = function() {
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                // Display user's email instead of the sign-in button
+                const signInBtn = document.getElementById('sign-in-btn');
+                signInBtn.textContent = userEmail;
+                signInBtn.style.cursor = 'default';
+                signInBtn.onclick = null;
+            }
+        };
+    </script>
+
+    <!-- JWT Decode Script -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+</body>
+</html>s

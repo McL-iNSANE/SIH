@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Sign Language (ISL) Translator</title>
+    <!-- Google Sign-In API -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Link to Stylesheet -->
+    <link href="./css/styles.css" rel="stylesheet">
+    <script defer type="module" src="./js/login.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="logo">ISL Translator</div>
+        <nav class="menu">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Features</a>
+            <a href="#">Contact</a>
+        </nav>
+        <!-- Sign-In Button or User Email -->
+        <div class="sign-in-btn" id="google-sign1">Sign In</div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Welcome to ISL Translator</h1>
+            <p class="hero-subtitle">A platform to help you learn and translate Indian Sign Language.</p>
+            <button class="get-started" id="google-sign">Get Started</button>
+        </div>
+
+        <!-- Image and Quote Section -->
+        <div class="hero-quote-image-container">
+            <!-- New Main Quote -->
+            <div class="main-quote">
+                "Speak with Your Hands, Listen with Your Heart, Communication for All."
+            </div>
+        
+            <!-- Existing Quote -->
+            <div class="hero-quote">
+                "Different, not less." - Temple Grandin
+            </div>
+
+            <!-- Image -->
+            <div class="hero-image-container">
+                <img src="./images/main.png" alt="Illustration" class="hero-image" loading="lazy">
+            </div>
+        </div>        
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="feature-item">
+                <h2>Real-Time Translation</h2>
+                <p>Translate sign language to text and vice versa instantly with high accuracy.</p>
+            </div>
+            <div class="feature-item">
+                <h2>User-Friendly Interface</h2>
+                <p>Easy-to-use interface designed for accessibility and ease of learning.</p>
+            </div>
+            <div class="feature-item">
+                <h2>Support for Multiple Languages</h2>
+                <p>Translate Indian Sign Language into various spoken languages seamlessly.</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Redirect to Conversion Page Function
+        function redirectToConversion() {
+            window.location.href = "./dist/convert.html";
+        }
+
+        // Handle Sign-In Function
+            google.accounts.id.prompt((notification) => {
+                if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                    alert("Sign-in failed. Please try again or check your settings.");
+                }
+            });
+        
+
+        // Handle Google Sign-In Response
+        function handleCredentialResponse(response) {
+            try {
+                const userObject = jwt_decode(response.credential);
+                const email = userObject.email;
+
+                // Store user information in local storage
+                localStorage.setItem('userEmail', email);
+
+                // Redirect to conversion page
+                window.location.href = "convert.html";
+            } catch (error) {
+                alert("An error occurred during sign-in. Please try again.");
+            }
+        }
+
+        // On page load, check if user is already signed in
+        window.onload = function() {
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                // Display user's email instead of the sign-in button
+                const signInBtn = document.getElementById('sign-in-btn');
+                signInBtn.textContent = userEmail;
+                signInBtn.style.cursor = 'default';
+                signInBtn.onclick = null;
+            }
+        };
+    </script>
+    <!-- JWT Decode Script -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+</body>
+</html>
